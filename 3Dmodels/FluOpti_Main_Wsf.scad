@@ -41,7 +41,7 @@ wall = 0.75;         // mm, standard wall thickness
 // Base Holder Parameters
 base_holder_thickness = 8;     // mm, thickness of the holder base
 base_holder_margin = 15;       // mm, extra margin around the base
-base_holder_height = 25;       // mm, height of the holder walls
+base_holder_height = 45;       // mm, height of the holder walls
 mount_screw_d = 4;             // mm, diameter of mounting screws
 mount_screw_head_d = 7;        // mm, diameter of screw head
 mount_screw_head_h = 3;        // mm, height of screw head
@@ -193,7 +193,7 @@ roof_thick_h=10; //to screw holder and camera in
 
 
 
-translate([0,0,200]) top_part(); 
+//translate([0,0,200]) top_part(); 
 
 //translate([ 0.00, 0.00, 70.00 ]) cone_hull_short();//usar este
 //
@@ -206,7 +206,7 @@ translate([0,0,200]) top_part();
 //translate([ 0.00, 0.00, -60.00 ]) lighting_base_squared();
 
 // Render the base holder
-//translate([0, 0, -170]) base_holder();
+translate([0, 0, -170]) base_holder();
 
 // Render the lighting base (commented out for testing)
 //translate([0, 0, base_holder_height]) lighting_base_squared();
@@ -729,54 +729,72 @@ module plate_holder(){
 translate([ 0, 0, -h_ring/2+wall*2])   joint_top();
 }
     
-wire_tunnel_h=35;
-vent_h=12;
 
 // Standalone base holder module
 module base_holder() {
+    wire_tunnel_h=35;
+vent_h=35; // to accommodate the fan height
+base_holder_sq_x=sq_x + wall*10;
+base_holder_sq_y=sq_y + wall*10;
+
     difference() {
         union() {
             // Main base plate
             translate([0, 0, base_holder_thickness/2 + foot_height])
-                color("DarkGray")
-                cube([sq_x + wall*10,
-                      sq_y + wall*10,
+                color("orange")
+                cube([base_holder_sq_x,
+                      base_holder_sq_y,
                       base_holder_thickness], center=true);
             
             // Walls
             difference() {
-                translate([0, 0, base_holder_height/2 + foot_height])
-                    color("yellow")
-                    cube([sq_x + wall*10 + wall*4,
-                          sq_y + wall*10 + wall*4,
+                union(){ translate([0, 0, base_holder_height/2 + foot_height])
+                    color("green")
+                    cube([base_holder_sq_x + wall*8,
+                          base_holder_sq_y + wall*8,
                           base_holder_height], center=true);
+                    
+            // Feet at the middle of walls to reinforce them
+            for(x=[-1:1:1]) for(y=[-1:1:1]) {
+                if ((x + y) == -1 || (x + y) == 1){
+                    translate([x*(sq_x/2+foot_top_d-wall*10),
+                          y*(sq_y/2++foot_top_d-wall*10),
+                          foot_height/2]) {
+                    color("LightGray")
+                     cylinder(d1=foot_d, d2=foot_top_d, h=foot_height, center=true);
+                     translate([0,0,base_holder_height/2+foot_height/2]) cylinder(d1=foot_top_d, d2=foot_d, h=base_holder_height, center=true);         
+                }}}
                 
+                 // Feet at corners of base
+            for(x=[-1,1]) for(y=[-1,1]) {
+                translate([x*(sq_x/2+foot_top_d-wall*10),
+                          y*(sq_y/2+foot_top_d-wall*10),
+                          foot_height/2]) {
+                    color("LightGray")
+                     cylinder(d1=foot_d, d2=foot_top_d, h=foot_height, center=true);
+                     translate([0,0,base_holder_height/2+foot_height/2]) cylinder(d1=foot_top_d, d2=foot_d, h=base_holder_height, center=true);  
+                }
+            }}
+        
                 translate([0, 0, base_holder_height/2 + foot_height+vent_h])
+                    color("blue")
                     cube([sq_x + wall*10+corr*2,
                           sq_y + wall*10+corr*2,
                           base_holder_height + 1], center=true);
                 
-                 translate([0, 0, base_holder_height/2 + foot_height])
+                 translate([0, 0, base_holder_height/2 + foot_height ])
+                    color("red")
                     cube([sq_x + wall*6,
                           sq_y + wall*6,
                           base_holder_height + 1], center=true);
                 
             }
-            
-            // Feet at corners of base
-            for(x=[-1,1]) for(y=[-1,1]) {
-                translate([x*(sq_x/2),
-                          y*(sq_y/2),
-                          foot_height/2]) {
-                    color("LightGray")
-                     cylinder(d1=foot_d, d2=foot_top_d, h=foot_height, center=true);
-                }
-            }
+
         }
         
         // Ventilation holes pattern
-        translate([0, 0, foot_height + base_holder_thickness/2]) {
-            for(x=[-3:3]) for(y=[-3:3]) {
+        translate([vent_hole_spacing, 0, foot_height + base_holder_thickness/2]) {//the translate in x is to shift the holes with respect to the holes in the module above (avoid alignment is important to reduce light pollution)
+            for(x=[-5:3]) for(y=[-4:4]) {
                 if((x+y) % 2 == 0) { // Checkerboard pattern
                     translate([x*vent_hole_spacing, y*vent_hole_spacing, 0])
                         cylinder(d=vent_hole_d, h=base_holder_thickness*2, center=true);
@@ -790,7 +808,7 @@ module base_holder() {
     }
     
           //wire cable tunnel to avoid light pollution in
-          translate([sq_x/2+wall*6,sq_x/2-wire_tunnel_h/2+wall*4,wire_tunnel_h/2+wire_clear*1.5]) difference(){
+          translate([sq_x/2+wall*8,sq_x/2-wire_tunnel_h/2+wall*4,wire_tunnel_h/2+wire_clear*1.5]) difference(){
              rotate([90,0,0]) cylinder(r=5+wall*3, h=wire_tunnel_h, center = true);
           translate([ 0, -wall*2,0]) rotate([90,0,0])cylinder(r=5, h=wire_tunnel_h, center = true); 
               translate([-sq_x/2,0,0])cube([sq_x,sq_y,h_ring],center = true);
