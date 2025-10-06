@@ -1,18 +1,15 @@
 # FluOpti
-Este proyecto consiste en la realización de un control integrado para la iluminación del proyecto FluOpti. Más información respecto al poyecto se puede encontrar en los siguientes enlaces:
-1. https://docs.google.com/document/d/1PmyignsIkzQdomBdSQQ2lFlBKneosc83GTr52-iTTBQ/edit?usp=sharing
-2. [Git](https://github.com/SynBioUC/FluoPi/tree/master/Hardware_design_files/PCB)
-3. [OSF](https://osf.io/dy6p2/)
-4. [Manual de diseño de proyectos de LEDs estandar](https://www.overleaf.com/4759732231nspqcngnnhdq)
+FluOpti es un dispositivo de Hardware Abierto para el control integrado de optogenética y microscopia fluorescente de bacterias creciendo en placas petri. El dispositivo permite el control y progamacion de una camara raspberry Pi, luces para microscopia fluorescente azul, luces blancas para microscopia de campo claro, luces rojas y verdes para control optogenético del sistema CcaS/R y un ITO glass para control de tempratura. FluOpti combina avances previos tales como:
+1. Fluopi: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0187163 
+2. Control en medio liquido del sistema CcaS/R: https://pubmed.ncbi.nlm.nih.gov/24608181/ 
+3. ITO glass control (Tim Rudge and Kevin Simpson, unpub. )
 
-## Descripción de problema electrónico
-El sistema consiste en un dispositivo que permite observar muestras biológicas, a las cuales se les realizan procesos de activación genética por medio de otpogenética. 
-En la práctica, el dispositivo consiste en una cámara conectada a una raspberry, la que permite observar las muestras, un set de LEDs, los que permiten realizar los procesos optogenéticos, y la respectiva electrónica de control. 
+## Descripción del sistema óptico
 
-Los LEDs que se deben controlar realizan 3 tareas distintas:
-1. Excitar la muestra para poder adquirir imágenes de fluorescencia: LEDs azules.
-2. Iluminar la muestra para obtener imágenes de campo claro que permitan medir el crecimiento de las colonias bacterianas de manera apropiada: LEDs blancos.
-3. Generar estímulos para activación de procesos optogenéticos. Estos LEDs son de longitudes de onda específicas dependiendo del gen que se desee activar/desactivar: LEDs rojos y verdes.
+1. El sistema de excitación de proteinas fluorescentes verde (sfGFP) y roja (mBeRFP, de excitacion azul debido a long stokes shift) esta basado en LEDs de 470nm + difusor + filtro azul de acrilico, y el uso de un filtro naranjo de acrilico que permite transmitancia de longitudes de onda verdes, amarillas y rojas (long pass >510nm). 
+2. El sistema optogenetico se basa en el uso del sistema CcaS/R de Jeff Tabor, el cual se induce por luz verde y se apaga por luz roja. Un anillo de LEDS rojos y verdes son utilizados para el control optogenetico.
+3. El sistema de iluminacion para obtener imágenes de campo claro se basa en LEDs blancos rodenado la placa. Esto permita medir el crecimiento de las colonias bacterianas de manera apropiada, incluso en celulas no fluorescentes.
+
 
 El proyecto también considera la necesidad de implementar sensores que permitan calibrar el sistema y monitorear variables determinadas, tales como intensidad o temperatura.
 
@@ -208,3 +205,6 @@ Dado que el circuito electrónico funcionará con alimentación DC es necesario 
 En la siguiente figura se muestra el diagrama de bloques del esquemático implementado
 
 ![Diagrama de bloques del esquemático](/README_images/diagrama_bloques.png)
+
+## Financiamiento
+Este proyecto esta financiado por ANID Millennium Science Initiative Program (ICN17_022) y el Fondo de Desarrollo Científico y Tecnológico (FONDECYT FONDECYT Regular 1211218 & FONDECYT Regular 1241452 dirigido por Fernan Federici)
