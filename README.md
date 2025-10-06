@@ -15,7 +15,7 @@ FluOpti es un dispositivo de hardware abierto diseñado para estudiar la respues
 
 El proyecto también considera la necesidad de implementar sensores que permitan calibrar el sistema y monitorear variables determinadas, tales como intensidad o temperatura.
 
-![Diagrama General](/README_images/Diagrama_1.PNG)
+![Diagrama General](/README_images/79EF0342D2435B20.png)
 
 
 
