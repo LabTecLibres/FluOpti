@@ -97,13 +97,10 @@ Las principales características de este ADC se enlistan a continuación
 #### Acondicionamiento de señal
 Los sensores que se utilizarán permiten implementar el proceso de medición gracias a la variación de sus propiedades eléctricas. En general, estas variaciones se evidencian mediante un cambio de voltaje. En consecuencia, este es el voltaje que debe ser adquirido por el circuito electrónico. Por ello, en primera instancia, se dispone de un circuito divisor que, al ser conectado con el respectivo sensor, permite obtener el voltaje asociado a la medición. En la siguiente figura se muestra un ejemplo de esta conexión circuital, para el caso de un sensor de temperatura del tipo termistor (NTC):
 
-![Divisor](/README_images/divisor_ntc.png)
-
 Para realizar correctamente la adquisición de las señales desde los sensores es necesario contar con una etapa de acondicionamiento de señal. De esta forma, se asegura que los valores de voltaje que entreguen los sensores se encuentren dentro de los límites que permiten las entradas del ADC y de la Raspberry. No solo es deseable que se opere dentro de los límites, sino también aprovechar el rango de lectura al máximo, es decir, que el voltaje mínimo de medición sea igual (o lo más cercano posible) al voltaje mínimo que permiten los pines del ADC. Y, la misma relación con el voltaje máximo de medición. 
 
 Dado que aún no existe 100% de certeza sobre los sensores a utilizar, se implementó una circuito genérico de acondicionamiento, el cual se compone de una etapa de amplificación y otra de adición de offset. En la siguiente figura se muestra este circuito:
 
-![Acondicionador](/README_images/acondicionador.png)
 
 Los símbolos de switches corresponden, en la práctica, a un solder jumper, el cual conecta la entrada con la salida solo si se unen con soldadura sus terminales. Si se conectan S1, S2 y S3 el circuito queda configurado como un buffer, lo cual, de todas formas, beneficia a la señal adquirida puesto que el buffer disminuye su impedancia. Conectando o no S1, S2 y S3 se pueden obtener distintas configuraciones: solo amplificador, solo adición de offset, o ambas. Además, los valores de las resistencias se pueden ajustar dependiendo de los sensores que se utilicen, de tal forma de fijar correctamente la ganancia y el offset, según sea el caso.
 
@@ -176,11 +173,6 @@ Dado que el circuito electrónico funcionará con alimentación DC es necesario 
 * Corriente máxima de salida: 10A
 * Potencia máxima de salida: 120W
 
-## Esquemático
-
-En la siguiente figura se muestra el diagrama de bloques del esquemático implementado
-
-![Diagrama de bloques del esquemático](/README_images/diagrama_bloques.png)
 
 ## Financiamiento
 Este proyecto esta financiado por ANID Millennium Science Initiative Program (ICN17_022) y el Fondo de Desarrollo Científico y Tecnológico (FONDECYT FONDECYT Regular 1211218 & FONDECYT Regular 1241452 dirigido por Fernan Federici)
