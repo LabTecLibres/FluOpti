@@ -1,14 +1,16 @@
 # FluOpti
-FluOpti es un dispositivo de Hardware Abierto para el control integrado de optogenética y microscopia fluorescente de bacterias creciendo en placas petri. El dispositivo permite el control y progamacion de una camara raspberry Pi, luces para microscopia fluorescente azul, luces blancas para microscopia de campo claro, luces rojas y verdes para control optogenético del sistema CcaS/R y un ITO glass para control de tempratura. FluOpti combina avances previos tales como:
+
+FluOpti es un dispositivo de hardware abierto diseñado para estudiar la respuesta de redes génicas bacterianas frente a estímulos de luz mediante control optogenético. El sistema integra la detección de señales de fluorescencia multicanal, el registro del crecimiento bacteriano por luz de campo claro y el control de la temperatura mediante un vidrio ITO. FluOpti permite programar y controlar de manera independiente luces LEDs azules para excitación de moleculas fluorescentes, luces blancas para medir crecimiento bacteriano en campo claro, y luces LEDs rojas y verdes para el control optogenético del sistema CcaS/CcaR (verde induce y rojo reprime el sistema genético). El dispositivo combina y extiende avances previos en microscopía automatizada, optogenética y hardware abierto para biología tales como:
 1. Fluopi: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0187163 
-2. Control en medio liquido del sistema CcaS/R: https://pubmed.ncbi.nlm.nih.gov/24608181/ 
-3. ITO glass control (Tim Rudge and Kevin Simpson, unpub. )
+2. Control (en medio liquido) del sistema CcaS/R en E. coli: https://pubmed.ncbi.nlm.nih.gov/24608181/ 
+3. Control de temperatura mediante vidrios ITO (Tim Rudge and Kevin Simpson, unpub. )
 
 ## Descripción del sistema óptico
 
-1. El sistema de excitación de proteinas fluorescentes verde (sfGFP) y roja (mBeRFP, de excitacion azul debido a long stokes shift) esta basado en LEDs de 470nm + difusor + filtro azul de acrilico, y el uso de un filtro naranjo de acrilico que permite transmitancia de longitudes de onda verdes, amarillas y rojas (long pass >510nm). 
-2. El sistema optogenetico se basa en el uso del sistema CcaS/R de Jeff Tabor, el cual se induce por luz verde y se apaga por luz roja. Un anillo de LEDS rojos y verdes son utilizados para el control optogenetico.
-3. El sistema de iluminacion para obtener imágenes de campo claro se basa en LEDs blancos rodenado la placa. Esto permita medir el crecimiento de las colonias bacterianas de manera apropiada, incluso en celulas no fluorescentes.
+1. El sistema de microscopia fluorescente esta compuesto de LEDs de 470nm + difusor + filtro azul de acrilico como ilimunación de excitación, y el uso de un filtro naranjo de acrilico que permite transmitancia de longitudes de onda verdes, amarillas y rojas (long pass >510nm). 
+2. El reporte de estados celulares mediante proteina una fluorescente verde (sfGFP) y una roja (mBeRFP, long stokes shift con espectro de excitación en azul). Esto permite excitar dos proteinas al mismo tiempo, obteniendo dos señales distinguibles, sin la necesidad de utilizar "filer wheels" moviles.
+3. El sistema optogenetico se basa en el sistema CcaS/R de Jeff Tabor [Ong 2018](https://www.superbrightleds.com/moreinfo/through-hole/5mm-blue-led-120-degree-viewing-angle-flat-tipped-1200-mcd/265/1192/](https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/cbic.201800007?domain=p2p_domain&token=5JQZ5REGVARWCY2SVFME)):, el cual se induce por luz verde y se apaga por luz roja. Un anillo de LEDS rojos y verdes son utilizados para el control optogenetico. 
+4. El sistema de iluminacion para obtener imágenes de campo claro se basa en LEDs blancos rodenado la placa. Esto permita medir el crecimiento de las colonias bacterianas de manera apropiada, incluso en celulas no fluorescentes.
 
 
 El proyecto también considera la necesidad de implementar sensores que permitan calibrar el sistema y monitorear variables determinadas, tales como intensidad o temperatura.
