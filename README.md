@@ -1,5 +1,9 @@
 # FluOpti
 
+
+<img src="https://github.com/LabTecLibres/FluOpti/blob/master/README_files/79EF0342D2435B20.png" width="200" />
+
+
 FluOpti es un dispositivo de hardware abierto diseñado para estudiar la respuesta de redes génicas bacterianas frente a estímulos de luz mediante control optogenético. El sistema integra la detección de señales de fluorescencia multicanal, el registro del crecimiento bacteriano por luz de campo claro y el control de la temperatura mediante un vidrio ITO. FluOpti permite programar y controlar de manera independiente luces LEDs azules para excitación de moleculas fluorescentes, luces blancas para medir crecimiento bacteriano en campo claro, y luces LEDs rojas y verdes para el control optogenético del sistema CcaS/CcaR (verde induce y rojo reprime el sistema genético). El dispositivo combina y extiende avances previos en microscopía automatizada, optogenética y hardware abierto para biología tales como:
 1. Fluopi: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0187163 
 2. Control (en medio liquido) del sistema CcaS/R en E. coli: https://pubmed.ncbi.nlm.nih.gov/24608181/ 
