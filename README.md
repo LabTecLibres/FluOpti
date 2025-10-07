@@ -1,5 +1,9 @@
 # FluOpti
 
+
+<img src="https://github.com/LabTecLibres/FluOpti/blob/master/README_files/fig1_v2-01.png" width="900" />
+
+
 FluOpti es un dispositivo de hardware abierto diseñado para estudiar la respuesta de redes génicas bacterianas frente a estímulos de luz mediante control optogenético. El sistema integra la detección de señales de fluorescencia multicanal, el registro del crecimiento bacteriano por luz de campo claro y el control de la temperatura mediante un vidrio ITO. FluOpti permite programar y controlar de manera independiente luces LEDs azules para excitación de moleculas fluorescentes, luces blancas para medir crecimiento bacteriano en campo claro, y luces LEDs rojas y verdes para el control optogenético del sistema CcaS/CcaR (verde induce y rojo reprime el sistema genético). El dispositivo combina y extiende avances previos en microscopía automatizada, optogenética y hardware abierto para biología tales como:
 1. Fluopi: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0187163 
 2. Control (en medio liquido) del sistema CcaS/R en E. coli: https://pubmed.ncbi.nlm.nih.gov/24608181/ 
@@ -15,79 +19,52 @@ FluOpti es un dispositivo de hardware abierto diseñado para estudiar la respues
 
 El proyecto también considera la necesidad de implementar sensores que permitan calibrar el sistema y monitorear variables determinadas, tales como intensidad o temperatura.
 
-![Diagrama General](/README_images/Diagrama_1.PNG)
+![Diagrama General](https://github.com/LabTecLibres/FluOpti/blob/master/README_files/79EF0342D2435B20.png)
 
 
+### Caracteristicas del hardware:
 
-## Requerimientos
-
-### Requerimientos generales
-A continuación se enlista un set de requerimientos generales del proyecto:
-1. Implementar una electrónica compatible con los componentes actuales disponibles.
-2. Proponer una solución completa al problema.
-3. Considerar diseños modulares que permitan adaptarse a parámetros futuros.
-
-### Requerimientos específicos
-
-A continuación se enlista un set de requerimientos específicos del proyecto:
 1. Los LEDs azules empleados para iluminar la muestra corresponden a los [Super Bright 5mm Blue](https://www.superbrightleds.com/moreinfo/through-hole/5mm-blue-led-120-degree-viewing-angle-flat-tipped-1200-mcd/265/1192/):
    * Longitud de onda: 470nm
    * Forward current: 30mA @ 3.3V
    * Peak forward current: 100mA
    * Max voltage forward: 3.8V
-   
-2. Actualmente, se está pensando en una placa de LEDs azules con distribución física del tipo circular. Esto implicaría una cantidad de 55 LEDs. En la siguiente imagen se muestra esta topología propuesta:
-
-
-![Propuesta nueva disposición LEDs azules](/README_images/disposicionBLUE.PNG)
-
-3. Los LEDs verdes empleados para la activación de genes corresponden a los [Kingbright WP7083ZGD/G](http://www.kingbrightusa.com/images/catalog/SPEC/WP7083ZGD-G.pdf):
+  
+2. Los LEDs verdes empleados para la activación de genes corresponden a los [Kingbright WP7083ZGD/G](http://www.kingbrightusa.com/images/catalog/SPEC/WP7083ZGD-G.pdf):
    * Longitud de onda: 520nm
    * Forward current (typ): 20mA @ 3.2V
    * Peak forward current: 100mA
    * Max voltage forward: 4V
    
-4. Los LEDs rojos empleados para la desactivación de genes corresponden a los [Deep-Red 5mm LED](https://www.ledsupply.com/leds/5mm-led-deep-red-660nm-50-degree-viewing-angle):
+3. Los LEDs rojos empleados para la desactivación de genes corresponden a los [Deep-Red 5mm LED](https://www.ledsupply.com/leds/5mm-led-deep-red-660nm-50-degree-viewing-angle):
    * Longitud de onda: 660nm
    * Forward current (typ): 20mA @ 2.2V
    * Peak forward current: 100mA
    * Max voltage forward: 2.8V
    
-5. Los LEDs blancos se implementan por medio de una tira LED comercial. Típicamente su operación se caracteriza por:
+4. Los LEDs blancos se implementan por medio de una tira LED comercial. Típicamente su operación se caracteriza por:
    * Forward current: 20mA @ 12V
-   
-6. El control implementado debe corresponder a PWM, con el fin de regular la intensidad lumínica de los LEDs. Se opta por este control debido a su sencilla implementación.
+  
+<img src="https://github.com/LabTecLibres/FluOpti/blob/master/README_files/PXL_20240315_194152728.jpg" width="400" />
 
-7. El sistema  debe contar con un sistema de distribución de potencia para alimentar todos los sub-módulos, LEDs y raspberry.
+6. El control implementado es via PWM, con el fin de regular la intensidad lumínica de los LEDs. Se opta por este control debido a su sencilla implementación.
 
-8. El sistema debe contar, además, con la posibilidad de leer sensores que permitan medir y calibrar la intensidad de luz proveniente desde los LEDs. Dado que el control se implementa por medio de una raspberry, es necesario utilizar sensores digitales o incluir en el diseño un ADC que permita realizar la conversión. En este último caso será necesaria la inclusión de una etapa que acondicione las señales provenientes desde los sensores.
-   
-9. El sensor de intensidad lumínica tiene que cumplir:
+7. El sistema cuenta con un sistema de distribución de potencia para alimentar todos los sub-módulos, LEDs y raspberry PI.
+
+8. El sistema puede, además, contar con la posibilidad de leer sensores que permitan medir y calibrar la intensidad de luz proveniente desde los LEDs. Dado que el control se implementa por medio de una raspberry, es necesario utilizar sensores digitales o incluir en el diseño un ADC que permita realizar la conversión. En este último caso será necesaria la inclusión de una etapa que acondicione las señales provenientes desde los sensores. El sensor de intensidad lumínica tiene que cumplir:
 * Bajo costo
 * Fácil de conseguir
 * Respuesta plana para los LED Rojo y Verde
 
 Una alternativa es el fototransistor [TEMT6000](https://learn.sparkfun.com/tutorials/temt6000-ambient-light-sensor-hookup-guide/all).
 
-10. El sensor de temperatura es un NTC (termistor). [Aquí](https://www.adafruit.com/product/372) se presenta una alternativa.
+9. El sensor de temperatura es un NTC (termistor). [Aquí](https://www.adafruit.com/product/372).
 
-11. El heater es del tipo resistivo y se debe poder alimentar con 9V ó 12V. Se debe implementar un control PWM de corriente utilizando un transistor. Una posible alternativa de heater es el [Film Heating Panel](http://www.icstation.com/heating-thin-film-polyimide-heating-plate-panel-25x50mm-b1221-p-9887.html).
+10. El heater es del tipo resistivo y se debe poder alimentar con 9V ó 12V. Se debe implementar un control PWM de corriente utilizando un transistor. Una posible alternativa de heater es el [Film Heating Panel](http://www.icstation.com/heating-thin-film-polyimide-heating-plate-panel-25x50mm-b1221-p-9887.html).
 
 
 ### Consideraciones de diseño adicionales
    
-1. Consideraciones de operación: El dispositivo debe ser diseñado para funcionar en espacios interiores y dentro de una cápsula cerrada, en la se realiza el análisis de las muestras, por lo que no es necesaria la resistencia al agua o a condiciones de humedad extremas. La placa estará, además, dentro de una caja, por lo que tampoco estará expuesta a polvo u otros contaminantes. Una vez instalado el dispositivo, este permanecerá siempre en el mismo lugar (a menos que se deba extraer por alguna situación en particular), por lo que no es necesario que el diseño considere la exposición a posibles golpes o vibraciones muy significativas.
-
-2. La única etapa del circuito que puede significar un peligro para el usuario es la alimentación, puesto que esta proviene desde la red eléctrica, por lo cual es prudente que la carcasa del producto cumpla con normas acorde al voltaje y corriente de operación, por ejemplo, IP67. Sin embargo, esta protección será ajena al circuito mismo. Es pertinente, de todas formas, la inclusión de disipadores en algunos integrados, en el caso que operen con altas corrientes. Esto, para evitar fallas durante la operación o incluso que se quemen componentes.
-
-
-## Propuesta
-Teniendo presente los requerimientos planteados en la sección anterior se propone una solución basada en el siguiente esquema
-
-
-![Esquema de la solución electrónica propuesta](/README_images/solución_propuesta.png)
-
-
 El principal criterio de diseño considerado es la modularidad, con el objetivo de poder entregar una solución adaptable y escalable. Los parámetros prácticos de elección de componentes dependen de los requerimientos específicos del sistema. El esquema general consiste en un módulo que genera señales PWM, el cual es controlado por protocolo serial I2C. Este módulo genera 16 señales de PWM permitiendo controlar hasta 16 canales. Estas señales PWM controlan los módulos driver. Estos últimos ajustan la señal PWM a los requerimientos que necesitan los distintos tipos de circuitos de LEDs. Cada driver puede poseer uno o más canales dependiendo de la cantidad de subcircuitos independientes que se deseen controlar por tipo de LED. Del mismo modo, algunas de estas señales de control PWM pueden dejarse a disposición del usuario en caso que necesite controlar una placa con driver ya existente, como es el caso de este proyecto. 
 
 El otro bloque importante es el sistema de distribución de poder, el cual se encarga de generar todos los voltajes necesarios para los distintos bloques y etapas del circuito, dependiendo de cada requerimiento. La idea principal es que la placa reciba una única alimentación y que, internamente, genere los distintos voltajes y corrientes, contribuyendo, así, a la adaptabilidad de la solución.
@@ -103,9 +80,6 @@ Las principales características de la solución propuesta son:
 2. Integración: La disposición de canales de control PWM permite integrar tanto las soluciones existentes como soluciones creadas por distintos fabricantes.
 
 3. Escalabilidad: Gracias a la utilización del protocolo I2C, es posible controlar múltiples de estas placas con una sola Raspberry Pi (o un solo microcontrolador/procesador en general). Si se integran dos placas en serie se puede llegar a disponer de 32 canales de control de LEDs y 8 canales de sensores analógicos. 
-
-A continuación, se describen en detalle los módulos a implementar. Es importante mencionar que se utilizó como guía el [documento tutorial](https://www.overleaf.com/4759732231nspqcngnnhdq) generado en el marco de este proyecto.
-
 
 ### Detalle de módulos
 
@@ -123,13 +97,10 @@ Las principales características de este ADC se enlistan a continuación
 #### Acondicionamiento de señal
 Los sensores que se utilizarán permiten implementar el proceso de medición gracias a la variación de sus propiedades eléctricas. En general, estas variaciones se evidencian mediante un cambio de voltaje. En consecuencia, este es el voltaje que debe ser adquirido por el circuito electrónico. Por ello, en primera instancia, se dispone de un circuito divisor que, al ser conectado con el respectivo sensor, permite obtener el voltaje asociado a la medición. En la siguiente figura se muestra un ejemplo de esta conexión circuital, para el caso de un sensor de temperatura del tipo termistor (NTC):
 
-![Divisor](/README_images/divisor_ntc.png)
-
 Para realizar correctamente la adquisición de las señales desde los sensores es necesario contar con una etapa de acondicionamiento de señal. De esta forma, se asegura que los valores de voltaje que entreguen los sensores se encuentren dentro de los límites que permiten las entradas del ADC y de la Raspberry. No solo es deseable que se opere dentro de los límites, sino también aprovechar el rango de lectura al máximo, es decir, que el voltaje mínimo de medición sea igual (o lo más cercano posible) al voltaje mínimo que permiten los pines del ADC. Y, la misma relación con el voltaje máximo de medición. 
 
 Dado que aún no existe 100% de certeza sobre los sensores a utilizar, se implementó una circuito genérico de acondicionamiento, el cual se compone de una etapa de amplificación y otra de adición de offset. En la siguiente figura se muestra este circuito:
 
-![Acondicionador](/README_images/acondicionador.png)
 
 Los símbolos de switches corresponden, en la práctica, a un solder jumper, el cual conecta la entrada con la salida solo si se unen con soldadura sus terminales. Si se conectan S1, S2 y S3 el circuito queda configurado como un buffer, lo cual, de todas formas, beneficia a la señal adquirida puesto que el buffer disminuye su impedancia. Conectando o no S1, S2 y S3 se pueden obtener distintas configuraciones: solo amplificador, solo adición de offset, o ambas. Además, los valores de las resistencias se pueden ajustar dependiendo de los sensores que se utilicen, de tal forma de fijar correctamente la ganancia y el offset, según sea el caso.
 
@@ -202,11 +173,6 @@ Dado que el circuito electrónico funcionará con alimentación DC es necesario 
 * Corriente máxima de salida: 10A
 * Potencia máxima de salida: 120W
 
-## Esquemático
-
-En la siguiente figura se muestra el diagrama de bloques del esquemático implementado
-
-![Diagrama de bloques del esquemático](/README_images/diagrama_bloques.png)
 
 ## Financiamiento
 Este proyecto esta financiado por ANID Millennium Science Initiative Program (ICN17_022) y el Fondo de Desarrollo Científico y Tecnológico (FONDECYT FONDECYT Regular 1211218 & FONDECYT Regular 1241452 dirigido por Fernan Federici)
