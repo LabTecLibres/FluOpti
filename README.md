@@ -1,178 +1,124 @@
 # FluOpti
 
-
 <img src="https://github.com/LabTecLibres/FluOpti/blob/master/README_files/fig1_v2-01.png" width="900" />
 
+FluOpti is an open-hardware device designed to study how bacterial gene networks respond to light stimuli through optogenetic control. The system integrates multichannel fluorescence detection, bright-field tracking of bacterial growth, and temperature regulation using an ITO glass heater. FluOpti supports independent programming and control of blue LEDs for exciting fluorescent reporters, white LEDs for bright-field growth measurements, and red/green LEDs for optogenetic control of the CcaS/CcaR system (green induces, red represses). The device combines and extends prior advances in automated microscopy, optogenetics, and open hardware for biology, including:
 
-FluOpti es un dispositivo de hardware abierto diseñado para estudiar la respuesta de redes génicas bacterianas frente a estímulos de luz mediante control optogenético. El sistema integra la detección de señales de fluorescencia multicanal, el registro del crecimiento bacteriano por luz de campo claro y el control de la temperatura mediante un vidrio ITO. FluOpti permite programar y controlar de manera independiente luces LEDs azules para excitación de moleculas fluorescentes, luces blancas para medir crecimiento bacteriano en campo claro, y luces LEDs rojas y verdes para el control optogenético del sistema CcaS/CcaR (verde induce y rojo reprime el sistema genético). El dispositivo combina y extiende avances previos en microscopía automatizada, optogenética y hardware abierto para biología tales como:
-1. Fluopi: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0187163 
-2. Control (en medio liquido) del sistema CcaS/R en E. coli: https://pubmed.ncbi.nlm.nih.gov/24608181/ 
-3. Control de temperatura mediante vidrios ITO (Tim Rudge and Kevin Simpson, unpub. )
+1. Fluopi: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0187163
+2. Liquid-media control of the CcaS/R system in *E. coli*: https://pubmed.ncbi.nlm.nih.gov/24608181/
+3. Temperature control using ITO glass (Tim Rudge and Kevin Simpson, unpublished).
 
-## Descripción del sistema óptico
+## Optical System Description
 
-1. El sistema de microscopia fluorescente esta compuesto de LEDs de 470nm + difusor + filtro azul de acrilico como ilimunación de excitación, y el uso de un filtro naranjo de acrilico que permite transmitancia de longitudes de onda verdes, amarillas y rojas (long pass >510nm). 
-2. El reporte de estados celulares mediante proteina una fluorescente verde (sfGFP) y una roja (mBeRFP, long stokes shift con espectro de excitación en azul). Esto permite excitar dos proteinas al mismo tiempo, obteniendo dos señales distinguibles, sin la necesidad de utilizar "filer wheels" moviles.
-3. El sistema optogenetico se basa en el sistema CcaS/R de Jeff Tabor [Ong 2018](https://www.superbrightleds.com/moreinfo/through-hole/5mm-blue-led-120-degree-viewing-angle-flat-tipped-1200-mcd/265/1192/](https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/cbic.201800007?domain=p2p_domain&token=5JQZ5REGVARWCY2SVFME)):, el cual se induce por luz verde y se apaga por luz roja. Un anillo de LEDS rojos y verdes son utilizados para el control optogenetico. 
-4. El sistema de iluminacion para obtener imágenes de campo claro se basa en LEDs blancos rodenado la placa. Esto permita medir el crecimiento de las colonias bacterianas de manera apropiada, incluso en celulas no fluorescentes.
+1. The fluorescence microscopy path uses 470 nm LEDs with a diffuser and a blue acrylic filter for excitation, plus an orange acrylic long-pass filter (cut-on >510 nm) that transmits green, yellow, and red emission.
+2. Cellular state reporting relies on a green fluorescent protein (sfGFP) and a red fluorescent protein (mBeRFP, long Stokes shift with blue excitation), enabling simultaneous excitation of both reporters and two clearly separable signals without moving filter wheels.
+3. The optogenetic module is based on the CcaS/R system developed by Jeff Tabor ([Ong 2018](https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/cbic.201800007?domain=p2p_domain&token=5JQZ5REGVARWCY2SVFME)), which is activated by green light and deactivated by red light. A ring of red and green LEDs provides optogenetic control.
+4. Bright-field illumination for growth measurements uses white LEDs around the plate, enabling colony-growth quantification even for non-fluorescent strains.
 
-
-El proyecto también considera la necesidad de implementar sensores que permitan calibrar el sistema y monitorear variables determinadas, tales como intensidad o temperatura.
+The design also includes sensors to calibrate the system and monitor variables such as light intensity and temperature.
 
 ![Diagrama General](https://github.com/LabTecLibres/FluOpti/blob/master/README_files/79EF0342D2435B20.png)
 
+### Hardware Specifications
 
-### Caracteristicas del hardware:
+1. Blue LEDs for sample illumination: [Super Bright 5mm Blue](https://www.superbrightleds.com/moreinfo/through-hole/5mm-blue-led-120-degree-viewing-angle-flat-tipped-1200-mcd/265/1192/)
+   * Peak wavelength: 470 nm
+   * Forward current: 30 mA @ 3.3 V
+   * Peak forward current: 100 mA
+   * Maximum forward voltage: 3.8 V
+2. Green LEDs for gene activation: [Kingbright WP7083ZGD/G](http://www.kingbrightusa.com/images/catalog/SPEC/WP7083ZGD-G.pdf)
+   * Peak wavelength: 520 nm
+   * Typical forward current: 20 mA @ 3.2 V
+   * Peak forward current: 100 mA
+   * Maximum forward voltage: 4.0 V
+3. Red LEDs for gene deactivation: [Deep-Red 5mm LED](https://www.ledsupply.com/leds/5mm-led-deep-red-660nm-50-degree-viewing-angle)
+   * Peak wavelength: 660 nm
+   * Typical forward current: 20 mA @ 2.2 V
+   * Peak forward current: 100 mA
+   * Maximum forward voltage: 2.8 V
+4. White LEDs are provided by a commercial LED strip, typically operated at:
+   * Forward current: 20 mA @ 12 V
 
-1. Los LEDs azules empleados para iluminar la muestra corresponden a los [Super Bright 5mm Blue](https://www.superbrightleds.com/moreinfo/through-hole/5mm-blue-led-120-degree-viewing-angle-flat-tipped-1200-mcd/265/1192/):
-   * Longitud de onda: 470nm
-   * Forward current: 30mA @ 3.3V
-   * Peak forward current: 100mA
-   * Max voltage forward: 3.8V
-  
-2. Los LEDs verdes empleados para la activación de genes corresponden a los [Kingbright WP7083ZGD/G](http://www.kingbrightusa.com/images/catalog/SPEC/WP7083ZGD-G.pdf):
-   * Longitud de onda: 520nm
-   * Forward current (typ): 20mA @ 3.2V
-   * Peak forward current: 100mA
-   * Max voltage forward: 4V
-   
-3. Los LEDs rojos empleados para la desactivación de genes corresponden a los [Deep-Red 5mm LED](https://www.ledsupply.com/leds/5mm-led-deep-red-660nm-50-degree-viewing-angle):
-   * Longitud de onda: 660nm
-   * Forward current (typ): 20mA @ 2.2V
-   * Peak forward current: 100mA
-   * Max voltage forward: 2.8V
-   
-4. Los LEDs blancos se implementan por medio de una tira LED comercial. Típicamente su operación se caracteriza por:
-   * Forward current: 20mA @ 12V
-  
 <img src="https://github.com/LabTecLibres/FluOpti/blob/master/README_files/PXL_20240315_194152728.jpg" width="400" />
 
-6. El control implementado es via PWM, con el fin de regular la intensidad lumínica de los LEDs. Se opta por este control debido a su sencilla implementación.
+5. LED intensity is modulated by PWM control, chosen for its straightforward implementation.
+6. A power-distribution stage supplies all submodules, the LEDs, and the Raspberry Pi.
+7. The system can read sensors to measure and calibrate light intensity. Because control is provided by a Raspberry Pi, either digital sensors or an external ADC with signal conditioning is required. The light sensor should be low cost, easy to source, and have a flat response for the red and green LEDs. One option is the [TEMT6000](https://learn.sparkfun.com/tutorials/temt6000-ambient-light-sensor-hookup-guide/all) phototransistor.
+8. Temperature sensing uses an NTC thermistor (e.g., [Adafruit #372](https://www.adafruit.com/product/372)).
+9. Heating is resistive and powered from 9 V to 12 V. Current is PWM-controlled through a transistor. A possible heater is the [Film Heating Panel](http://www.icstation.com/heating-thin-film-polyimide-heating-plate-panel-25x50mm-b1221-p-9887.html).
 
-7. El sistema cuenta con un sistema de distribución de potencia para alimentar todos los sub-módulos, LEDs y raspberry PI.
+### Additional Design Considerations
 
-8. El sistema puede, además, contar con la posibilidad de leer sensores que permitan medir y calibrar la intensidad de luz proveniente desde los LEDs. Dado que el control se implementa por medio de una raspberry, es necesario utilizar sensores digitales o incluir en el diseño un ADC que permita realizar la conversión. En este último caso será necesaria la inclusión de una etapa que acondicione las señales provenientes desde los sensores. El sensor de intensidad lumínica tiene que cumplir:
-* Bajo costo
-* Fácil de conseguir
-* Respuesta plana para los LED Rojo y Verde
+Modularity is the primary design criterion to provide an adaptable and scalable solution. A PWM-generation module, controlled over an I2C serial bus, produces 16 PWM channels that drive LED driver modules. Drivers tailor the PWM signals to the electrical needs of the different LED circuits. Each driver can host one or multiple channels, and some PWM control lines are available to interface with existing driver boards if needed.
 
-Una alternativa es el fototransistor [TEMT6000](https://learn.sparkfun.com/tutorials/temt6000-ambient-light-sensor-hookup-guide/all).
+The power-distribution system generates all voltages required by the different circuit blocks from a single input supply, improving adaptability by delivering the necessary rails internally.
 
-9. El sensor de temperatura es un NTC (termistor). [Aquí](https://www.adafruit.com/product/372).
+The board also includes a 4-channel ADC controlled via I2C to read up to four analog sensors. Because the Raspberry Pi lacks an ADC, this stage broadens compatibility with diverse analog sensors. Signal-conditioning stages are configured to match each specific sensor.
 
-10. El heater es del tipo resistivo y se debe poder alimentar con 9V ó 12V. Se debe implementar un control PWM de corriente utilizando un transistor. Una posible alternativa de heater es el [Film Heating Panel](http://www.icstation.com/heating-thin-film-polyimide-heating-plate-panel-25x50mm-b1221-p-9887.html).
+### Summary of Proposed Solution
 
+1. Adaptability: the entire board is controlled through a single I2C bus (3 pins), regardless of the number of LEDs or sensors.
+2. Integration: the layout of PWM control channels accommodates both existing solutions and modules from different vendors.
+3. Scalability: I2C enables chaining multiple boards from a single Raspberry Pi (or other microcontroller/processor). Two boards in series provide up to 32 LED control channels and 8 analog sensor channels.
 
-### Consideraciones de diseño adicionales
-   
-El principal criterio de diseño considerado es la modularidad, con el objetivo de poder entregar una solución adaptable y escalable. Los parámetros prácticos de elección de componentes dependen de los requerimientos específicos del sistema. El esquema general consiste en un módulo que genera señales PWM, el cual es controlado por protocolo serial I2C. Este módulo genera 16 señales de PWM permitiendo controlar hasta 16 canales. Estas señales PWM controlan los módulos driver. Estos últimos ajustan la señal PWM a los requerimientos que necesitan los distintos tipos de circuitos de LEDs. Cada driver puede poseer uno o más canales dependiendo de la cantidad de subcircuitos independientes que se deseen controlar por tipo de LED. Del mismo modo, algunas de estas señales de control PWM pueden dejarse a disposición del usuario en caso que necesite controlar una placa con driver ya existente, como es el caso de este proyecto. 
-
-El otro bloque importante es el sistema de distribución de poder, el cual se encarga de generar todos los voltajes necesarios para los distintos bloques y etapas del circuito, dependiendo de cada requerimiento. La idea principal es que la placa reciba una única alimentación y que, internamente, genere los distintos voltajes y corrientes, contribuyendo, así, a la adaptabilidad de la solución.
-
-Por último, la placa considera la inclusión de un ADC de 4 canales, controlado por I2C, el cual permite leer hasta 4 sensores analógicos. Es necesario contar con un ADC, ya que la Raspberry Pi no cuenta con ADC. Esto permite otorgar una alta adaptabilidad, ya que es posible conectar distintos tipos de sensores analógicos, dependiendo de la aplicación. Para esto, la placa considera etapas de acondicionamiento de señal, las cuales se deben configurar para el sensor específico.
-
-### Resumen de características de la solución propuesta
-
-Las principales características de la solución propuesta son:
-
-1. Adaptabilidad: La placa total solo se controla por medio de un bus I2C (3 pines), independiente de la cantidad de LEDs y sensores que se deseen utilizar. 
-
-2. Integración: La disposición de canales de control PWM permite integrar tanto las soluciones existentes como soluciones creadas por distintos fabricantes.
-
-3. Escalabilidad: Gracias a la utilización del protocolo I2C, es posible controlar múltiples de estas placas con una sola Raspberry Pi (o un solo microcontrolador/procesador en general). Si se integran dos placas en serie se puede llegar a disponer de 32 canales de control de LEDs y 8 canales de sensores analógicos. 
-
-### Detalle de módulos
+### Module Details
 
 #### ADC
-El ADC escogido es el [ADC](https://cdn-shop.adafruit.com/datasheets/ads1115.pdf) de la empresa Texas Instruments. La empresa [adafruit](https://www.adafruit.com/product/1085) posee un módulo autocontenido para integrar este ADC a la Raspberry Pi, así como una completa documentación y las bibliotecas para utilizarlo. 
+The chosen ADC is the Texas Instruments ADS1115. Adafruit offers a self-contained module for integrating this ADC with the Raspberry Pi, along with documentation and supporting libraries.
 
-Las principales características de este ADC se enlistan a continuación
+Key specifications:
+* 4 single-ended channels
+* 16-bit resolution
+* Supply voltage: 2 V to 5 V
+* I2C interface
+* Internal reference
 
-* 4 canales, single-ended.
-* 16 bits de resolución
-* Voltaje de alimentación entre 2V a 5V
-* Interfaz I2C
-* Referencia interna
+#### Signal Conditioning
+The sensors used for measurements vary their electrical properties, typically producing a voltage change. A voltage divider connected to each sensor captures the measurement voltage. Proper acquisition requires conditioning so sensor outputs remain within the ADC and Raspberry Pi input limits while maximizing usable dynamic range.
 
-#### Acondicionamiento de señal
-Los sensores que se utilizarán permiten implementar el proceso de medición gracias a la variación de sus propiedades eléctricas. En general, estas variaciones se evidencian mediante un cambio de voltaje. En consecuencia, este es el voltaje que debe ser adquirido por el circuito electrónico. Por ello, en primera instancia, se dispone de un circuito divisor que, al ser conectado con el respectivo sensor, permite obtener el voltaje asociado a la medición. En la siguiente figura se muestra un ejemplo de esta conexión circuital, para el caso de un sensor de temperatura del tipo termistor (NTC):
+Because the exact sensors may change, a generic conditioning circuit was implemented with amplification and offset stages. Solder jumpers (S1, S2, S3) allow configurations such as buffer-only, gain-only, offset-only, or gain plus offset. Resistor values can be tuned to set the appropriate gain and offset for each sensor.
 
-Para realizar correctamente la adquisición de las señales desde los sensores es necesario contar con una etapa de acondicionamiento de señal. De esta forma, se asegura que los valores de voltaje que entreguen los sensores se encuentren dentro de los límites que permiten las entradas del ADC y de la Raspberry. No solo es deseable que se opere dentro de los límites, sino también aprovechar el rango de lectura al máximo, es decir, que el voltaje mínimo de medición sea igual (o lo más cercano posible) al voltaje mínimo que permiten los pines del ADC. Y, la misma relación con el voltaje máximo de medición. 
+#### PWM Generator
+PWM generation is handled by the [PCA9685](https://cdn-shop.adafruit.com/datasheets/PCA9685.pdf) integrated circuit. Adafruit provides a Raspberry Pi-compatible module with documentation and libraries.
 
-Dado que aún no existe 100% de certeza sobre los sensores a utilizar, se implementó una circuito genérico de acondicionamiento, el cual se compone de una etapa de amplificación y otra de adición de offset. En la siguiente figura se muestra este circuito:
+Key specifications:
+* 16 PWM-dimmable channels
+* 12-bit resolution
+* Supply voltage: 2.3 V to 5.5 V
+* I2C interface
 
+#### Low-Current Driver
+Low-current channels (e.g., red and green LED arrays) use the [ULN2803](https://www.electroschematics.com/wp-content/uploads/2013/07/uln2803a-datasheet.pdf), an array of eight Darlington transistors that allows control of up to eight channels.
 
-Los símbolos de switches corresponden, en la práctica, a un solder jumper, el cual conecta la entrada con la salida solo si se unen con soldadura sus terminales. Si se conectan S1, S2 y S3 el circuito queda configurado como un buffer, lo cual, de todas formas, beneficia a la señal adquirida puesto que el buffer disminuye su impedancia. Conectando o no S1, S2 y S3 se pueden obtener distintas configuraciones: solo amplificador, solo adición de offset, o ambas. Además, los valores de las resistencias se pueden ajustar dependiendo de los sensores que se utilicen, de tal forma de fijar correctamente la ganancia y el offset, según sea el caso.
+Key specifications:
+* 8-channel array with common supply
+* Maximum current per channel: 500 mA (higher if channels are paralleled)
 
+#### High-Current Driver
+High-current channels use the [IRF740](https://datasheet.lcsc.com/szlcsc/1808281645_Infineon-Technologies-IRF7402TRPBF_C169089.pdf) MOSFET, with one transistor per channel. For currents above 1 A, heatsinks or thermal pads are recommended to dissipate heat effectively.
 
-#### Generador de PWM
-La generación de PWM se realiza por medio de un circuito integrado [PCA9685](https://cdn-shop.adafruit.com/datasheets/PCA9685.pdf). La empresa [adafruit](https://www.adafruit.com/product/2928) posee un módulo autocontenido para integrar este módulo a la Raspberry Pi, así como una documentación completa y las bibliotecas para utilizarlo. 
+Key specifications:
+* Supports high switching frequencies
+* Low operating losses
+* Up to 10 A continuous control (up to 40 A pulsed)
+* Simple implementation
 
+#### Power Distribution
+The electronics operate from a 12 V DC input, with DC-DC converters generating the required rails for analog and digital circuits, LED arrays, and the heater. The following converters are used:
 
-Principales características:
+* 5 V: [LM2596R-5.0](https://datasheet.lcsc.com/szlcsc/1811131510_HTC-Korea-TAEJIN-Tech-LM2596R-5-0_C77782.pdf) — step-down switching regulator, 150 kHz switching, 3 A max output.
+* 3.3 V: [AP2112K-3.3](https://datasheet.lcsc.com/szlcsc/1809192242_Diodes-Incorporated-AP2112K-3-3TRG1_C51118.pdf) — linear LDO, 600 mA max output.
+* 9 V: [LM2696SX-ADJ](https://datasheet.lcsc.com/szlcsc/1809192335_Texas-Instruments-LM2596SX-ADJ-NOPB_C29781.pdf) — adjustable step-down switching regulator, 150 kHz switching, 3 A max output.
+* 16 V / 20 V / 24 V: [XL6008E1](https://datasheet.lcsc.com/szlcsc/1809200019_XLSEMI-XL6008E1_C73012.pdf) — adjustable step-up switching regulator, 400 kHz switching, 3 A max output.
 
-* 16 canales dimeables por PWM.
-* 12 bits de resolución
-* Voltaje de alimentación etre 2.3V a 5.5V
-* Interfaz I2C
+#### Power Supply
+Because the circuit operates from DC, a switched-mode 12 V supply is used.
 
+* Input voltage: 100–120 VAC @ 60 Hz or 200–240 VAC @ 50 Hz
+* Output voltage: 12 V
+* Maximum output current: 10 A
+* Maximum output power: 120 W
 
-#### Driver de baja corriente
+## Funding
 
-Para los canales de bajo consumo de corriente, tales como los arreglos de LEDs rojos y verdes, se utilizará el integrado [ULN2803](https://www.electroschematics.com/wp-content/uploads/2013/07/uln2803a-datasheet.pdf). Este integrado implementa un arreglo de 8 transistores tipo darlington, haciendo posible el control de hasta 8 canales en un único integrado.
-
-Principales características:
-
-* Arreglo de 8 canales
-* Poseen alimentación común
-* La corriente máxima por canal es de 500mA, pudiendo aumentar esta cantidad si se consideran canales en paralelo.
-
-#### Driver de alta corriente
-Para los canales de alto consumo se utilizará un transistor mosfet [IRF740](https://datasheet.lcsc.com/szlcsc/1808281645_Infineon-Technologies-IRF7402TRPBF_C169089.pdf). Es necesario contar con un transistor por canal. Y, para casos de alta corriente (superiores a 1A) es necesario considerar la inclusión de disipadores (heatsink) o pads de disipación que permitan una evacuación efectiva del calor.
-
-Principales características:
-
-* Altas frecuencias de switching
-* Bajo consumo de operación 
-* Control de hasta 10A (ó 40A en corrientes pulsantes)
-* Simple implementación
-
-#### Sistema de distribución de poder
-
-Como se mencionará más adelante, la alimentación que llegará al circuito electrónico implementado será de 12VDC, por lo que es necesario contar con convertidores de voltaje DC-DC para generar los distintos voltajes de alimentación que se requieren en el circuito. En particular, es necesario generar 5V y 3.3V para alimentar los circuitos analógicos y digitales, y un set de voltajes para alimentar los distintos arreglos de LEDs y el Heater. Se decidió disponer de los siguientes voltajes para este último uso: 9V, 16V, 20V y 24V. A continuación se especifican los convertidores empleados para generar cada uno de los voltajes mencionados.
-
-##### 5V
-* Integrado: [LM2596R-5.0](https://datasheet.lcsc.com/szlcsc/1811131510_HTC-Korea-TAEJIN-Tech-LM2596R-5-0_C77782.pdf)
-* Tipo: Step-down, regulador switching
-* Frecuencia de switcheo: 150kHz
-* Corriente máxima de salida: 3A
-
-##### 3.3V
-* Integrado: [AP2112K-3.3](https://datasheet.lcsc.com/szlcsc/1809192242_Diodes-Incorporated-AP2112K-3-3TRG1_C51118.pdf)
-* Tipo: LDO, regulador lineal
-* Corriente máxima de salida: 600mA
-
-##### 9V
-* Integrado: [LM2696SX-ADJ](https://datasheet.lcsc.com/szlcsc/1809192335_Texas-Instruments-LM2596SX-ADJ-NOPB_C29781.pdf)
-* Tipo: Step-down, regulador switching ajustable (voltaje de salida es configurable según indicaciones de conexión en el datasheet)
-* Frecuencia de switcheo: 150kHz
-* Corriente máxima de salida: 3A
-
-##### 16V, 20V, 24V
-* Integrado: [XL6008E1](https://datasheet.lcsc.com/szlcsc/1809200019_XLSEMI-XL6008E1_C73012.pdf)
-* Tipo: Step-up, regulador switching ajustable (voltaje de salida es configurable según indicaciones de conexión en el datasheet)
-* Frecuencia de switcheo: 400kHz
-* Corriente máxima de salida: 3A
-
-#### Fuente de alimentación
-
-Dado que el circuito electrónico funcionará con alimentación DC es necesario emplear una fuente DC que se enchufe directamente a la red y que entegue un voltaje de salida continuo. En particular, se decidió emplear una [fuente DC conmutada](https://afel.cl/producto/fuente-de-poder-12v-10a-120w/). Sus principales características son:
-
-* Voltaje de entrada: 100-120VAC / 60Hz, **200-240VAC / 50Hz**
-* Voltaje de salida: 12V
-* Corriente máxima de salida: 10A
-* Potencia máxima de salida: 120W
-
-
-## Financiamiento
-Este proyecto esta financiado por ANID Millennium Science Initiative Program (ICN17_022) y el Fondo de Desarrollo Científico y Tecnológico (FONDECYT FONDECYT Regular 1211218 & FONDECYT Regular 1241452 dirigido por Fernan Federici)
+This project is funded by the ANID Millennium Science Initiative Program (ICN17_022) and the Fondo de Desarrollo Cientifico y Tecnologico (FONDECYT Regular 1211218 and FONDECYT Regular 1241452, directed by Fernan Federici).
