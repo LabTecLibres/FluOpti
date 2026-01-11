@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Analysis functions developed for the FluoPi/FluOpti proyect.
+Analysis functions developed for the FluoPi/FluOpti project.
 
 @author: Prosimios
 """
@@ -76,13 +76,13 @@ class DataSet:
         self.fnames = dict()  # dictionary of list
         self.channels = (
             list()
-        )  # list ['W','F'][Whithe_light, Blue_light], the keys of the othe dictionaries
+        )  # list ['W','F'][Whithe_light, Blue_light], the keys of the other dictionaries
         self.rois = dict()  # dict with rois
         self.plot_path = ""  # path of plots folder
-        self.px_to_mm = None  # pixel to millimeter convertion factor
+        self.px_to_mm = None  # pixel to millimeter conversion factor
         self.smoothing = dict()  # to store the smoothing parameters
         self.background = dict()  # to store the channels background
-        self.threshold = 255  # whithe field threshold to binarize images
+        self.threshold = 255  # white field threshold to binarize images
         self.band_params = dict()  # to store the parameters of border band definition
         self.shift = {"y": None, "x": None}  # shift spline in each axis
         self.ref_center = [
@@ -98,19 +98,19 @@ class DataSet:
         data: dictionary with the data
         fnames: list with the file names
 
-        It gets the channels list directly fromt data.keys()
+        It gets the channels list directly from data.keys()
         """
 
         self.data = data
         self.fnames = fnames
         self.channels = list(data.keys())
-        return "Data added succesfully"
+        return "Data added successfully"
 
     def get_times(self, param_name="time", file_extension="txt"):
         """
-        to get the time information from metadata files asociated to the
+        to get the time information from metadata files associated to the
         filenames in the data set.
-        Use them to construct the propper time vector.
+        Use them to construct the proper time vector.
         """
         # self.times =
         return
@@ -118,10 +118,10 @@ class DataSet:
     def compose_image(self, channels, data_frame=-1, im_structure="RGB", dtype="uint8"):
         """
         channels: dict
-            dictionary with the channels positions and names to built the image
+            dictionary with the channels positions and names to build the image
             e.g. channels = { 0 : 'R', 1 : 'G'}, indicate the image will be composed
-            of with the channels R and G of the data in positions 0 and 1
-            of the new image respectivelly.
+            of the channels R and G of the data in positions 0 and 1
+            of the new image respectively.
 
         data_frame is not necessary for channels with just 1 frame
 
@@ -151,8 +151,8 @@ class DataSet:
             else:
                 checked_pos.append(pos)
 
-        # create the array to rebuilt the image based on the first checked channel
-        n, m = data[checked_pos[0]].shape[0:2]  # take just the first two dimentions
+        # create the array to rebuild the image based on the first checked channel
+        n, m = data[checked_pos[0]].shape[0:2]  # take just the first two dimensions
 
         if im_structure == "RGBA":
             imdata = np.zeros((n, m, 4), dtype=dtype)
@@ -246,9 +246,9 @@ class DataSet:
 
 class ROI:
     """
-    ROI (Region Of Interest) element asociated to a colony surrounding area.
+    ROI (Region Of Interest) element associated to a colony surrounding area.
     ROIs belong to a DataSet.rois
-    It also contains methods to diplay its data and its information.
+    It also contains methods to display its data and its information.
     """
 
     def __init__(
@@ -266,7 +266,7 @@ class ROI:
         self.id = col_id  # integer
         self.data = data  # dictionary with data arrays of each channel
 
-        # limits coordinates in the source image (they are the actuall limits, need to add +1 to perform slicing)
+        # limits coordinates in the source image (they are the actual limits, need to add +1 to perform slicing)
         self.xlims = xlims  # [x_left, x_right]
         self.ylims = ylims  # [y_up, y_dowm]
         self.blob = blob  # [yc, xc, rc], rc is the blob colony radius and yc,xc are the center coordinates in the source image.
@@ -300,7 +300,7 @@ class ROI:
     def get_shape(self, chan=None):
         """
         To get the roi data height and wide shape, based on the data of the
-        idicated channel. I no channel is indicated, use the first one.
+        indicated channel. I no channel is indicated, use the first one.
         """
         if chan is None:
             chan = list(self.data.keys())[0]
@@ -326,7 +326,7 @@ class ROI:
         """
         get the position of the colony central point [yc, xc] relative to the source image coordinates
 
-        Parametes:
+        Parameters:
         ---------
         center: list
             [yc, xc] center position values relative to the ROI coordinates
@@ -363,7 +363,7 @@ class ROI:
         dc = self.data[channel]
 
         if dc.ndim == 2:
-            dc = np.expand_dims(dc, axis=-1)  # add 3rd dimmention
+            dc = np.expand_dims(dc, axis=-1)  # add 3rd dimmension
 
         nframes = dc.shape[2]
 
@@ -421,8 +421,8 @@ class ROI:
 
     def add_times(self, tkey, times=None, dt=1, t0=0):
         """
-        Not sure if make it a dictionary to store diffetent times from different
-        metadatas, or use just one of them as aproximation...
+        Not sure if make it a dictionary to store different times from different
+        metadatas, or use just one of them as approximation...
         """
         if times is not None:
 
@@ -442,7 +442,7 @@ class ROI:
         Parameters
         ----------
         new_channels : list
-            new channel names to be adde to the roi
+            new channel names to be added to the roi
 
         ask: bool
             True to ask user confirmation in case of coinceidence.
@@ -503,10 +503,10 @@ class ROI:
     ):
         """
         To load just the ROI and not the whole files
-        make sure to use prefix and suffix propperly to avoid delete other channels.
+        make sure to use prefix and suffix properly to avoid delete other channels.
 
-        It add just square ROIs. If want to add circular ROIs use flua.add_rois_data()
-        after add the square ROIs.
+        It adds just square ROIs. If want to add circular ROIs use flua.add_rois_data()
+        after addig the square ROIs.
 
         If you are loading different ROIs for the same data, its more efficient to
         use flua.load_rois_data(rois) instead of this method over each ROI,
@@ -597,7 +597,7 @@ class ROI:
         Parameters
         ----------
 
-        data : list or dictionar
+        data : list or dictionary
             list of channel data names or channels dictionary with its names as keys.
 
         ids : list or array of integers
@@ -605,7 +605,7 @@ class ROI:
 
         channels : list or dictionary
             the channels names/keys to be used.
-            in case of dictionarty, the channels positions and names to be used.
+            in case of dictionary, the channels positions and names to be used.
             e.g. channels = { 0 : 'R', 1 : 'G'},
             indicates that R and G channels will be used
 
@@ -619,7 +619,7 @@ class ROI:
             averaged image for each indicated channel
 
         """
-        # compute the averge value
+        # compute the average value
         avg_frame = average_images(
             self.data, ids=frame_ids, channels=channels, **kwargs
         )
@@ -647,7 +647,7 @@ class ROI:
 
         assign: bool
             if True, the channels will be assigned to the data with the name of
-            the original channel plus preffix and suffixs.
+            the original channel plus prefix and sufix.
 
         pfx_sfx, chans_times and descriptor same as other functions.
 
@@ -683,7 +683,7 @@ class ROI:
             return result_data
 
     def get_frame(self, channel, frame):
-        # for parameters see source get_roi_frame functionn
+        # for parameters see source get_roi_frame function
         return get_roi_frame(self, channel, frame)
 
     def get_attrs(self, attrs):
@@ -747,7 +747,7 @@ def round_up(value):
         -0.5 is round to 0
 
     value: same as input
-        in case is not posible to perform the operation it returns
+        in case is not possible to perform the operation it returns
         the given value.
         e.g. if the given value is None.
     """
@@ -801,7 +801,7 @@ def missing_intensities(image, step=1, down_range=0, up_range=256):
 
 def strip_chars(word, chars):
     """
-    to elimnate the each char in the list of chars from the word.
+    to elimnate each char in the list of chars from the word.
 
     word: string
         The word to strip
@@ -843,7 +843,7 @@ def create_path(
     be ignored.
 
     """
-    # remove the '/' and '\' at the beggining and at the end of fname and subdirs inputs
+    # remove the '/' and '\' at the beginning and at the end of fname and subdirs inputs
     fname = strip_chars(fname, sep_folder_chars)
     subdirs = strip_chars(subdirs, sep_folder_chars)
 
@@ -867,7 +867,7 @@ def create_path(
             # Keep the file format indicated in fname
             pass
 
-    # built the absoluthe paths
+    # built the absolute paths
     fpath = os.path.join(os.getcwd(), subdirs, fname)
     dirpath = os.path.dirname(fpath)
 
@@ -893,11 +893,11 @@ def create_folder(folder_name, subdirs="", sep_folder_chars=["/", "\\"]):
     Return
     ------
     folder_path: str
-        The absolute and propperly normalized folder path
+        The absolute and properly normalized folder path
 
     """
 
-    # built the absoluthe paths (eliminate folder separatoros from borders too)
+    # built the absolute paths (eliminate folder separatoros from borders too)
     folder_path, dirpath = create_path(
         folder_name, subdirs, sep_folder_chars=sep_folder_chars
     )
@@ -943,20 +943,20 @@ def create_file(
 
     overwrite: bool
         If False, you will be asked prior to overwrite the file
-        If True, the files will be overwrittem directly if there was a previous
+        If True, the files will be overwritten directly if there was a previous
         version.
     Returns
     -------
     (file_path, boolean)
 
     file_path: str
-        The absolute and propperly normalized file path
+        The absolute and properly normalized file path
 
     boolean
         True indicates to create the file (it doesn't exist or overwrite was chosen)
         False to don't create the file
     """
-    # built the absoluthe paths (eliminate folder separatoros from borders too)
+    # built the absolute paths (eliminate folder separatoros from borders too)
     file_path, dirpath = create_path(
         filename, file_ext, subdirs, file_mode=True, sep_folder_chars=sep_folder_chars
     )
@@ -1031,7 +1031,7 @@ def save_obj(
         e.g. subdirs = 'folder1/folder2' for 'folder1/folder2/ofname.pickle'
 
     sep_folder_chars: list
-        forbiden strings at the borders
+        forbidden strings at the borders
         like the separator character between folder and files
 
     file_ext: str
@@ -1043,14 +1043,14 @@ def save_obj(
 
     overwrite: bool
         If False, you will be asked prior to overwrite the file
-        If True, the files will be overwrittem directly if there was a previous
+        If True, the files will be overwritten directly if there was a previous
         version.
 
     Returns
     -------
     None. Just pickle ans save the object.
     """
-    # built the absoluthe paths and verify if it previously exists
+    # built the absolute paths and verify if it previously exists
     fpath, create = create_file(
         ofname,
         file_ext,
@@ -1097,7 +1097,7 @@ def load_obj(filename, file_ext="pickle", subdirs="", sep_folder_chars=["/", "\\
         with the load.
 
     sep_folder_chars: list
-        forbiden strings at the borders
+        forbidden strings at the borders
         like the separator character between folder and files
 
     Returns
@@ -1107,7 +1107,7 @@ def load_obj(filename, file_ext="pickle", subdirs="", sep_folder_chars=["/", "\\
 
     """
 
-    # compose the absolute path propperly
+    # compose the absolute path properly
     fpath, dirpath = create_path(
         filename, file_ext, subdirs, file_mode=True, sep_folder_chars=sep_folder_chars
     )
@@ -1176,7 +1176,7 @@ def save_im(
             "values outside [0,255] will by clipped.\n"
         )
 
-    # built the absoluthe paths and verify if it previously exists
+    # built the absolute paths and verify if it previously exists
     fpath, create = create_file(
         fname, fformat, subdirs, overwrite=overwrite, sep_folder_chars=sep_folder_chars
     )
@@ -1217,7 +1217,7 @@ def save_figure(
     if fname includes the format in its name, that format will be used instead
     of "file_ext" variable.
 
-    Tipycally call it as:
+    Tipically call it as:
     fig_kwargs = {'bbox_inches': 'tight', 'transparent': True, 'dpi': 300}
     flua.save_figure(fig, ofname, fformat, subfolds,
              overwrite = False, **fig_kwargs)
@@ -1236,7 +1236,7 @@ def save_figure(
         e.g. subdirs = 'folder1/folder2' for 'folder1/folder2/fname.png'
 
     sep_folder_chars: list
-        forbiden strings at the borders
+        forbidden strings at the borders
         like the separator character between folder and files
 
     file_ext: str
@@ -1244,7 +1244,7 @@ def save_figure(
 
     overwrite: bool
         If False, you will be asked prior to overwrite the file
-        If True, the files will be overwrittem directly if there was a previous
+        If True, the files will be overwritten directly if there was a previous
         version.
 
     kwargs:
@@ -1255,7 +1255,7 @@ def save_figure(
     -------
     None. Just save the figure as an image file.
     """
-    # built the absoluthe paths and verify if it previously exists
+    # built the absolute paths and verify if it previously exists
     fpath, create = create_file(
         fname, file_ext, subdirs, overwrite=overwrite, sep_folder_chars=sep_folder_chars
     )
@@ -1568,7 +1568,7 @@ def interactive_sfiles(
     fpath=None, display_files=True, separator="/", interact=True, **kwargs
 ):
     """
-    Interactive vertion of selected files function
+    Interactive version of selected files function
     select_files(
     (ftype = '', fpath = None, name_key='', start_key = '',
                  sort = True, display = True, separator = '/', **kwargs)
@@ -1838,11 +1838,11 @@ def get_times(
     mdata_ftype=".txt",
     mdata_fpath=None,
     separator="/",
-    convertion=1 / (1000000000 * 3600),
+    conversion=1 / (1000000000 * 3600),
     **kwargs,
 ):
     """
-    to get the time information from metadata files asociated to the
+    to get the time information from metadata files associated to the
     filenames in the data set. It is assumed the same as the file_names but
     with the extension indicated in mdata_fext
     Use them to construct the propper time vector.
@@ -1862,7 +1862,7 @@ def get_times(
         asociate metadata file.
 
     t0: numeric
-        time value asociated to the first image in the data set.
+        time value associated to the first image in the data set.
 
     param_name: string
         name of the time parameter to be read from the metadata file.
@@ -1876,7 +1876,7 @@ def get_times(
     separator: str
         character used to split the folders
 
-    convertion: numeric
+    conversion: numeric
         factor to convert the time values to hours, or any other desired unit.
 
     kwargs: dictionary
@@ -1886,9 +1886,9 @@ def get_times(
     ------
 
     times: list of float
-        list with the time values for each asociated input filename, in the
+        list with the time values for each associated input filename, in the
         same order as the input fpaths. The unit values dependes on the
-        convertion parameter, but default convert to hour (divides by 10^9
+        conversion parameter, but default convert to hour (divides by 10^9
         together 3600)
 
     """
@@ -1916,7 +1916,7 @@ def get_times(
         # get its values from the metadata (it returns a dict)
         dvalues = get_metadata(mdata_fname, param_names=param_name)
 
-        # extract just the strings asociated to numeric values
+        # extract just the strings associated to numeric values
         values = extract_number(dvalues[param_name], npos=None)
 
         # convert to number type, just taking the first ndigits
@@ -1931,8 +1931,8 @@ def get_times(
     times = np.array(times)
 
     # subtract the epoch time of the minimal value (i.e. the first image) and sum its experiment time
-    # and apply the units convertion
-    times = convertion * (times - times.min() + t0)
+    # and apply the units conversion
+    times = conversion * (times - times.min() + t0)
 
     return times
 
@@ -1944,7 +1944,7 @@ def im_to_vector(image):
     Parameters
     ----------
     image : array like
-        image data array. e.g. array of n,m,k dimentions.
+        image data array. e.g. array of n,m,k dimensions.
         where n,m are image size, and k the number of channels.
 
     image_count : int
@@ -2090,7 +2090,7 @@ def get_im_data(
     # get the output channnels prefix and suffix
     pfx, sfx = pfx_sfx[0], pfx_sfx[1]
 
-    # get the frame dimentions limits
+    # get the frame dimensions limits
     ylims = frame_limits[0]
     xlims = frame_limits[1]
 
@@ -2107,7 +2107,7 @@ def get_im_data(
     # In case monochromatic image was solicited
     if get_mono:
 
-        # create the name propperly
+        # create the name properly
         mono_name = pfx
 
         for k in c_positions:
@@ -2225,7 +2225,7 @@ def get_im_data(
         # check the correct order of the dimmentions
         while ims_data[chan_name].shape[0] != heigh:
 
-            # rotate the dimentions by moving the dim 0 to the end (-1)
+            # rotate the dimensions by moving the dim 0 to the end (-1)
             ims_data[chan_name] = np.moveaxis(ims_data[chan_name], 0, -1)
 
         if renorm:
@@ -2294,7 +2294,7 @@ def get_im_data(
 
         print(f"Final channel data format: {out_dtype}\n")
 
-    # store the filenames asociated to the selected images
+    # store the filenames associated to the selected images
     ims_data["fnames"] = selected_fnames
 
     return (ims_data, ochans)
@@ -2341,7 +2341,7 @@ def grid_calibration(
     will be transformed to grayscale.
 
     Chessboard grid images are the recommended for the calibration as they
-    are easier and more precissely detected by the algorithm.
+    are easier and more precisely detected by the algorithm.
 
     Parameters:
     ----------
@@ -2983,7 +2983,7 @@ def bg_subst(data, bg, channels=CHANNELS):
 def subtract_to_frame(data, value):
     """
     Subtracts a value or array of values from a frame data.
-    It is case sensitive on the dimentions nature of subtracted value
+    It is case sensitive on the dimensions nature of subtracted value
 
      Parameters:
      -----------
@@ -2998,7 +2998,7 @@ def subtract_to_frame(data, value):
     dtype = data.dtype
     # result = np.zeros(data.shape, dtype = 'float32')
 
-    # modify the value according it dimentions
+    # modify the value according it dimensions
     if np.isscalar(value):
         # subtract the scalar to the whole data
         pass
@@ -3222,7 +3222,7 @@ def compose_image(
          with data_array shape [N,M] or [N,M,Frames]
 
     channels: dict
-        dictionary with the channels positions 0,1,2 asociated to the names
+        dictionary with the channels positions 0,1,2 associated to the names
         of the channels in data to built the image.
         e.g. channels = { 0 : 'CX', 1 : 'nG', 2 : 'C2'}, indicate the image
         will be composed with the channels CX, G and C2 of the data in positions
@@ -3287,7 +3287,7 @@ def compose_image(
     # create the array to rebuilt the image based on the first checked channel
     n, m = data[channels[checked_pos[0]]].shape[
         0:2
-    ]  # take just the first two dimentions
+    ]  # take just the first two dimensions
 
     if len(c_positions) > 1 or monochromatic is False:
         # in this case, empty channels are left as zeros
@@ -3325,7 +3325,7 @@ def compose_image(
         # in this case the image is converted to multichannel using the input colormap
         imdata = np.zeros(
             (n, m), dtype=dtype
-        )  # just to be clear about the dimentions in the code
+        )  # just to be clear about the dimensions in the code
 
         chan = channels[checked_pos[0]]
         data_chan = data[chan]
@@ -3385,7 +3385,7 @@ def smooth_data(
         dictionary with the images data frames stored stored independently for
         each channel.
         e.g. data['chan_name'] = [h,w,n]
-        where h and w are image dimentions (heih and wide) and n is the number of frames.
+        where h and w are image dimensions (heih and wide) and n is the number of frames.
         It has to be 'uint8' format. If not, will be converted prior the
         smoothing.
 
@@ -3454,7 +3454,7 @@ def smooth_data(
             # make sure the channel is uint8
             if dchan.dtype != "uint8":
 
-                # in case reconvertion factor wasn´t indicated
+                # in case reconversion factor wasn´t indicated
                 if factor is None:
                     if dchan.max() < 1:
 
@@ -3465,7 +3465,7 @@ def smooth_data(
                         # just change the data type
                         factor = 1  # factor = 1 doesn´t have any other effect
 
-                # perform the factor renormalization and/or data convertion
+                # perform the factor renormalization and/or data conversion
                 # this renormalization instance doesn't make the data to cover the full span of values
                 dchan = renormalize(dchan, factor=factor, dtype="uint8")
 
@@ -4711,7 +4711,7 @@ def eval_smooth(image, fim, row, data_range=None, normalize=False, vlims=False):
     #
     print("Transect at " + str(row) + " pixel in y-axis")
 
-    # check the dimentions
+    # check the dimensions
     h1, w1 = image.shape[0:2]
     h2, w2 = fim.shape[0:2]
 
@@ -4827,7 +4827,7 @@ def image_shift(
     Parameters:
     -----------
     image : np.ndarray
-        Monochromatic image of dimentions (N, M).
+        Monochromatic image of dimensions (N, M).
 
     dy : numeric
         y-axis displacement
@@ -5106,7 +5106,7 @@ def moving_average(im2d, wsize, cmap=None):
     2D image array
 
     wsize: tuple
-        rolling windows size. It has to be same number of dimentions as im2D
+        rolling windows size. It has to be same number of dimensions as im2D
         e.g. = (2,2)
     """
     # define the colormap to be used
@@ -5145,18 +5145,18 @@ def background_variation(
     ----------
     splines: list
         List of dictionaries obtained with the flup.inspect_signal() function
-        Each dictionary contains a spline object asociated to [spline_key].
+        Each dictionary contains a spline object associated to [spline_key].
 
     n_frames: integer
         Number of frames to build the background variation vector.
         The splines are evaluated in the space defined by that number of frames.
 
     initial_ids : list or array of integers
-        ids asociated to the initial images, the ids previously used to
+        ids associated to the initial images, the ids previously used to
         compute the average background image.
 
     spline_key: string
-        dictionary key asociated to spline object of input "splines"
+        dictionary key associated to spline object of input "splines"
 
     channel: str
         channel name used to create the output dictionary
@@ -5880,7 +5880,7 @@ def get_roi_frame(roi, channel, frame):
 
     else:
         raise ValueError(
-            f"Invalid array dimentions in channel {channel} for ROI {roi.id}"
+            f"Invalid array dimensions in channel {channel} for ROI {roi.id}"
         )
 
     return (roi_frame, frame)
@@ -6204,7 +6204,7 @@ def data_thr_contour(
 
     threshold: False, numeric or list/np.array
         if a numeric values is indicated, this values is used to binaruze all the images
-        if a list/np.array is indicated, use the asociated threshold value to each frame
+        if a list/np.array is indicated, use the associated threshold value to each frame
         By default is False and OTSU threshold is automatically determined for each frame.
 
     tcr: numeric
@@ -6258,7 +6258,7 @@ def data_thr_contour(
             centroids[:,0] = [yc0,yc1,..,ycn]
 
         "centers": np.array
-            the center coordinates the eclosed circle asociated to the contour
+            the center coordinates the eclosed circle associated to the contour
             of each frame
             center[0,:] = [yc0,xc0]
             center[:,0] = [yc0,yc1,..,ycn]
@@ -6608,7 +6608,7 @@ def data_thr_contour(
 def get_circle_data(data, center, r, mode="<=", boolean=False):
     """
     To get the the data of (N,M,..) arrays confined inside or outside a circular
-    area defined in the N,M dimentions.
+    area defined in the N,M dimensions.
     The selected area is controled by 'mode' parameter.
     If boolean parameter is True, the output is a boolean mask of the area.
 
@@ -6634,7 +6634,7 @@ def get_circle_data(data, center, r, mode="<=", boolean=False):
     Returns
     -------
     cdata: np.array
-        array of the same dimentions and shape as the input data but
+        array of the same dimensions and shape as the input data but
         keeping just the values inside or outside the given circle.
         The rest of the data is set to zero.
         In case boolean parameter is True, the output is a boolean array
@@ -6692,7 +6692,7 @@ def get_circle_data(data, center, r, mode="<=", boolean=False):
 def get_circle_mask(center, r, dims=None, ref_array=None, mode="<="):
     """
     To get a circular boolean mask given a input center and radius.
-    The output array size is defined by explicit dimentions (dims parameter) or
+    The output array size is defined by explicit dimensions (dims parameter) or
     using a reference array (ref_array)
     If iternal or external circle area is considered as True is defined by
     'mode' parameter.
@@ -6707,7 +6707,7 @@ def get_circle_mask(center, r, dims=None, ref_array=None, mode="<="):
         radius value
 
     dims: list or tuple, optional
-        the dimentions of the output array dims = [10,10]
+        the dimensions of the output array dims = [10,10]
 
     ref_array: np.array, optional
         multidimentional array used as size reference to create the output array.
@@ -6720,7 +6720,7 @@ def get_circle_mask(center, r, dims=None, ref_array=None, mode="<="):
     Returns
     -------
     mask: np.array
-        boolean array mask of the indicated dimentions with True values inside
+        boolean array mask of the indicated dimensions with True values inside
         or outside the indicated circle (accord the selected mode).
 
     """
@@ -8031,7 +8031,7 @@ def get_all_contours(rois, channel, threshold, frames=None, bin_value=1):
     for roi in rois.values():
 
         print(roi.id)
-        # check the dimentions
+        # check the dimensions
         if roi.data[channel].ndim == 3:
 
             ## init the list of the ROI valies in the dictionaries
@@ -8629,7 +8629,7 @@ def load_rois_data(
     use this function instead of the individual ROI class method, because it reads
     the images just one time for all the input ROIs.
 
-    Make sure to use prefix and suffix propperly to avoid deletion of others channels.
+    Make sure to use prefix and suffix properly to avoid deletion of others channels.
 
     Parameters
     ----------
@@ -8910,7 +8910,7 @@ def generate_control_signal(control_regimen, times, time_key="T"):
     # get the regimens chedule limits
     tlims = control_regimen[time_key]
 
-    # get the other keys asociated to control elements
+    # get the other keys associated to control elements
     ckeys = list(control_regimen.keys())
     ckeys.remove(time_key)
 
@@ -8959,7 +8959,7 @@ def fixed_bands_signal(roi, d_chan, width=None, n_bands=None, d0=0, signal_attr=
 
     d_chan : str
         name of the distances channel to be used to define the bands. It have to
-        be the sames as the distance channel asociated to the signal.
+        be the sames as the distance channel associated to the signal.
 
     width : float
         the width of the band in the propper units of the distance channel.
@@ -9633,18 +9633,18 @@ def forze_imdtype(array, dtype, renorm=False, factor=1):
     idtype = array.dtype.name
 
     # now we have differente situation depending on the combination
-    # of the array format and the objective format of convertion
+    # of the array format and the objective format of conversion
 
     # if idtype is 'float
     if np.issubdtype(idtype, np.floating):
 
-        # if the convertion format is uint8
+        # if the conversion format is uint8
         if dtype == "unit8":
 
             if renorm or isinstance(renorm, list):
                 a = False  ## just to fill this place
 
-        # if the convertion is another float
+        # if the conversion is another float
         elif np.issubdtype(dtype, np.floating):
             array = change_dtype(array, dtype)
 
