@@ -1,4 +1,0 @@
-Agradecimientos
-=============
-
-IoWLabs, FedereciLab
