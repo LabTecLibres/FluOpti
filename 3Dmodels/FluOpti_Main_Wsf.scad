@@ -194,7 +194,9 @@ roof_thick_h=10; //to screw holder and camera in
 
 
 //translate([0,0,200]) top_part(); 
-
+//
+//translate([ 0.00, 0.00, 70.00 ]) cone_hull_shorter64();//usar este for camera HQ64
+//
 //translate([ 0.00, 0.00, 70.00 ]) cone_hull_short();//usar este
 //
 //translate([ 0.00, 0.00, 170.00 ]) rotate([0,180,0])led_ring_enclosure();
@@ -206,7 +208,7 @@ roof_thick_h=10; //to screw holder and camera in
 //translate([ 0.00, 0.00, -60.00 ]) lighting_base_squared();
 
 // Render the base holder
-translate([0, 0, -170]) base_holder();
+//translate([0, 0, -170]) base_holder();
 
 // Render the lighting base (commented out for testing)
 //translate([0, 0, base_holder_height]) lighting_base_squared();
@@ -372,7 +374,78 @@ module pi_supports(){
         }
     }
 
-//translate([0,0,100]) top_part();                 
+//translate([0,0,110]) top_part64();                 
+module top_part64(){
+   
+focus_h=focus_h/2;
+    difference(){
+       union(){
+      difference(){
+                 translate([ 0.00, 0.00, focus_h/2+roof_thick_h/2 ]) color("green")  cylinder( r=int_top_cyl_r+wall*7, h=focus_h+wall*2+roof_thick_h, center=true);//
+            translate([ 0.00, 0.00,focus_h/2-wall*2 ]) color("yellow")  cylinder( r=int_top_cyl_r+wall*2+corr   , h=focus_h-wall*2+corr, center=true);//corr was added in 2024 for prusa
+
+            //operation window //important for manipulation and screwing things in (leave it)
+          translate([ 0.00, 0.00, focus_h/4]) rotate([0,0,90]) minkowski(){ 
+                    sphere(r=1.5); cube([ focus_r*3, focus_r, focus_h/2 ], center=true); }
+                  }}
+                
+            //wire clearance tunel
+                  translate([int_top_cyl_r+wall*2-wall,0, focus_h/2-wall*2]) color("white") cube([wire_clearance_x*2.5,wire_clearance_w+wall*4,focus_h+wall*2],center = true);
+            //camera csi flat cable clearance
+                     translate([int_top_cyl_r*1.8,0, focus_h+roof_thick_h-wall]) color("pink")    rotate([0,-12,0])cube([int_top_cyl_r*3,24,wall*6],center = true);
+
+            // M3 nut hexagonal hole in side wall (X+ direction)
+           // X+ side
+           rotate([0,0,35]) translate([m3_nut_hole_offset, 0, m3_nut_hole_z])
+               union(){  color("orange") m3_nut_hex_hole();
+                   // Central hole for M3 screw (3.2 mm diameter)
+             translate([-m3_nut_depth,0,0])rotate([0,90,0]) cylinder(d=3.2, h=m3_nut_depth*10, $fn=40);}
+           // X- side
+           rotate([0,0,-35]) translate([-m3_nut_hole_offset, 0, m3_nut_hole_z])
+               union(){  color("orange") m3_nut_hex_hole();
+                   // Central hole for M3 screw (3.2 mm diameter)
+             translate([-m3_nut_depth,0,0])rotate([0,90,0]) cylinder(d=3.2, h=m3_nut_depth*10, $fn=40);}
+              // X+Y- side
+           rotate([0,0,-35]) translate([m3_nut_hole_offset, 0, m3_nut_hole_z])
+               union(){  color("orange") m3_nut_hex_hole();
+                   // Central hole for M3 screw (3.2 mm diameter)
+             translate([-m3_nut_depth,0,0])rotate([0,90,0]) cylinder(d=3.2, h=m3_nut_depth*10, $fn=40);}
+           // X-Y- side
+           rotate([0,0,35]) translate([-m3_nut_hole_offset, 0, m3_nut_hole_z])
+               union(){  color("orange") m3_nut_hex_hole();
+                   // Central hole for M3 screw (3.2 mm diameter)
+             translate([-m3_nut_depth,0,0])rotate([0,90,0]) cylinder(d=3.2, h=m3_nut_depth*10, $fn=40);}
+                       
+                  }            
+             //cable riel
+     difference(){
+         translate([int_top_cyl_r+wall*2+wire_clearance_x/2-wall,0, focus_h/2-wall])     color("red")    cube([wire_clearance_x+wall*10,wire_clearance_w+wall*10,focus_h],center = true);
+    translate([int_top_cyl_r+wall*2 +wire_clearance_x/2-wall,0, focus_h/2-wall*4])     color("blue")    cube([wire_clearance_x+wall*4+corr*2,wire_clearance_w+wall*3+corr*3,focus_h+corr],center = true);//the corr in wire_clearance_w is critical for tight fitting.
+     
+             translate([ 0.00, 0.00,focus_h/2-wall*2 ]) color("yellow")  cylinder( r=int_top_cyl_r+wall*2+corr   , h=focus_h-wall*2+corr, center=true);//corr was added in 2024 for prusa
+       }
+       
+             //camera mount
+          color("red")translate([ 0.00, 0.00, focus_h-wall*2+4])  rotate([0,180,90]) camera_mount(camera);
+       
+           //arms hole
+//            xash = scafold_x/2 + arm_tick + s_arm_screw+ra_screw;
+//      xash=28;
+       xash = scafold_x/2 +ra_screw;
+           difference(){ 
+               color("red")translate([ 0.00, 0.00, focus_h-wall*2])
+       for (x =[xash,-xash]){
+                translate([0,x,wall*2])
+                cylinder($fn = 100, h=20+wall, r=ra_screw*3, center=true);
+                }
+           color("white")translate([ 0.00, 0.00, focus_h-wall*2])
+       for (x =[xash,-xash]){
+                translate([0,x,0])
+                cylinder($fn = 100, h=21+wall, r=ra_screw, center=true);
+                }
+            }}
+            
+// translate([0,0,110]) top_part();                 
 module top_part(){
    
 
@@ -510,6 +583,38 @@ module joint_bottom(){
             
  h_cam_short=5;
       
+      //cone_hull_shorter64();
+module cone_hull_shorter64(){
+      translate([ 0,0,h_ring/4])    translate([ 0.00, 0.00, h_cam_short-corr])  top_part_cone(); 
+                    
+ //hull part
+       difference(){
+            union(){
+                hull(){
+               translate([ 0.00, 0.00, h_ring ]) color("white") cylinder(r=int_top_cyl_r+wall*2, h=h_cam_short);
+                      color("white")  cube([sq_x+wall*10,sq_y+wall*10,1],center = true);
+                }
+                   hull(){
+               translate([ 0.00, 0.00, h_ring ]) color("yellow") cylinder(r=int_top_cyl_r+wall*2, h=h_cam_short);
+                  translate([sq_x/2+wall*4, -raspi_board[1]/2, -h_ring ])  rotate([90,0,90])  cube([raspi_board[0]-20,raspi_board[1],2]); 
+                }}
+                      
+                   hull(){
+                    translate([ 0.00, 0.00, h_ring+corr ])  cylinder( r=int_top_cyl_r, h=h_cam_short);
+                    translate([ 0.00, 0.00, -corr ])    color("white") cube([sq_x+wall*6+corr*2,sq_y+wall*6+corr*2,1],center = true);
+}         
+translate([ 0.00, 0.00, -h_ring/2 ])         color("yellow")    cube([sq_x+wall*6+corr*2,sq_y+wall*6+corr*2,h_ring+corr*2],center = true);
+            }
+          //joint    
+         translate([ 0.00, 0.00, -h_ring/2 ])  difference(){
+             joint_top();
+              //wire clearance
+                  translate([ -sq_y/2-wall*2, -sq_y/2-wall*2, -h_ring/2]) color("red")    cube([wall*8,wall*3,h_ring/4],center = true);
+         }
+       
+                          translate([sq_x/2+wall*4, -raspi_board[1]/2, -h_ring ])  rotate([90,0,90])     RPI_holder();
+
+}
 //cone_hull_short();
 module cone_hull_short(){
       translate([ 0,0,h_ring])    translate([ 0.00, 0.00, h_cam_short-corr])  top_part_cone(); 
