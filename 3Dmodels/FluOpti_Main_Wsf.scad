@@ -444,7 +444,7 @@ module pi_supports(){
 //            }}
 //            
 
- translate([0,0,110]) top_part();                 
+// translate([0,0,110]) top_part();                 
 module top_part(){
        translate([-raspi_board[1]/2-4, -raspi_board[1]/2, focus_h+wall*2+roof_thick_h ])    RPI_holder();
     difference(){
@@ -796,18 +796,18 @@ module diffuser_holder(sq){
 //      }
 //}
 
-//translate([0,0,90])extension_ring();
+translate([0,0,90])extension_ring();
 module extension_ring(){
-//top part holding the plate and interfacing with lid
-  translate([ 0, 0, h_ring/2]) difference(){
+//top part  interfacing with lid
+  translate([ 0, 0, h_ring/2]) 
       joint_bottom();
-        //wire clearance
-        translate([ -sq_y/2, -sq_y/2, 0]) color("red")    cube([wall*8,wall*3,h_ring],center = true);
-  }
-
-
+         translate([ 0, 0, 3]) difference(){
+                       color("blue")    cube([sq_x+wall*10,sq_y+wall*10,4],center = true);
+                 color("yellow")    cube([sq_x+wall*4+corr*2,sq_y+wall*4+corr*2,7],center = true);
+            
+            }
 //ring for top part joining printed lighting cylinder 
-translate([ 0, 0, -h_ring/2+wall*2])   joint_top();
+translate([ 0, 0, -h_ring/2+wall*4])   joint_top();
 }
 
 
